@@ -61,6 +61,20 @@ void FTimer::singleshot(long msec, const QObject *receiver, const char *member)
     }
 }
 
+void FTimer::preciseSingleshot(long nanoSec, const QObject *receiver, const char *member)
+{
+
+    *m_timerStart = std::chrono::high_resolution_clock::now();
+    m_receiver = receiver;
+    m_member = member;
+    *m_timerDuration = std::chrono::duration_cast<std::chrono::duration<double>> ((std::chrono::nanoseconds)(nanoSec));
+
+    if(nanoSec / 1000000 > 2){
+
+        QTimer::singleShot((nanoSec / 1000000) - 1, Qt::PreciseTimer, m_receiver, member);
+    }
+}
+
 void FTimer::timerFinished()
 {
 
@@ -77,4 +91,5 @@ void FTimer::counterFinished()
 
     connect(this, SIGNAL(counterFinished()), m_receiver, m_member);
     emit counterFinished();
+    //disconnect(this, SIGNAL(counterFinished()), m_receiver, m_member);
 }
