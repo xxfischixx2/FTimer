@@ -19,7 +19,7 @@ void Counter::startCounting()
 
     while(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - *m_timerStart) != *m_timerDuration){
 
-        if(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - *m_timerStart) == *m_timerDuration){
+        if(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - *m_timerStart) >= *m_timerDuration){
 
             emit countingFinished();
             return;
